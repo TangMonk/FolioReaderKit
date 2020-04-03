@@ -8,7 +8,7 @@
 
 import UIKit
 import ZFDragableModalTransition
-
+import os.log
 /// Protocol which is used from `FolioReaderCenter`s.
 @objc public protocol FolioReaderCenterDelegate: class {
 
@@ -35,6 +35,7 @@ import ZFDragableModalTransition
 /// The base reader class
 open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    
     /// This delegate receives the events from the current `FolioReaderPage`s delegate.
     open weak var delegate: FolioReaderCenterDelegate?
 
@@ -70,6 +71,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var currentPageNumber: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
+    var fontsMenu: FolioReaderFontsMenu? = nil
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -106,6 +108,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     required public init?(coder aDecoder: NSCoder) {
         fatalError("This class doesn't support NSCoding.")
     }
+    
+   
 
     /**
      Common Initialization
@@ -125,6 +129,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         loadingView.startAnimating()
         self.view.addSubview(loadingView)
     }
+    
+   
 
     // MARK: - View life cicle
 
@@ -1349,11 +1355,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func presentFontsMenu() {
         folioReader.saveReaderState()
         hideBars()
+        
+        
+        fontsMenu = FolioReaderFontsMenu(folioReader: folioReader, readerConfig: readerConfig)
+        fontsMenu!.modalPresentationStyle = .custom
 
-        let menu = FolioReaderFontsMenu(folioReader: folioReader, readerConfig: readerConfig)
-        menu.modalPresentationStyle = .custom
-
-        animator = ZFModalTransitionAnimator(modalViewController: menu)
+        animator = ZFModalTransitionAnimator(modalViewController: fontsMenu)
         animator.isDragable = false
         animator.bounces = false
         animator.behindViewAlpha = 0.4
@@ -1361,8 +1368,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         animator.transitionDuration = 0.6
         animator.direction = ZFModalTransitonDirection.bottom
 
-        menu.transitioningDelegate = animator
-        self.present(menu, animated: true, completion: nil)
+        fontsMenu!.transitioningDelegate = animator
+        self.present(fontsMenu!, animated: true, completion: nil)
     }
 
     /**

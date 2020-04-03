@@ -27,7 +27,18 @@ open class FolioReaderContainer: UIViewController {
     public var folioReader: FolioReader
 
     fileprivate var errorOnLoad = false
-
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+              if #available(iOS 12.0, *) {
+                  if self.traitCollection.userInterfaceStyle == .dark {
+                      NSLog("dark")
+                    folioReader.nightMode = true
+                  }else{
+                      folioReader.nightMode = false
+                  }
+              }
+          }
     // MARK: - Init
 
     /// Init a Folio Reader Container
@@ -108,11 +119,14 @@ open class FolioReaderContainer: UIViewController {
         self.shouldRemoveEpub = removeEpub
     }
 
+   
     // MARK: - View life cicle
 
     override open func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         let canChangeScrollDirection = self.readerConfig.canChangeScrollDirection
         self.readerConfig.canChangeScrollDirection = self.readerConfig.isDirection(canChangeScrollDirection, canChangeScrollDirection, false)
 

@@ -18,6 +18,18 @@ class PageViewController: UIPageViewController {
     var index: Int
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+          if #available(iOS 12.0, *) {
+              if self.traitCollection.userInterfaceStyle == .dark {
+                  NSLog("PageViewController dark")
+              }else{
+                  NSLog("PageViewController light")
+              }
+          }
+      }
 
     // MARK: Init
 
