@@ -176,8 +176,8 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
 //        fontName.segments[2].titleFont = UIFont(name: "Lora-Regular", size: 18)!
 //        fontName.segments[3].titleFont = UIFont(name: "Raleway-Regular", size: 18)!
 
-        fontName.selectSegmentAtIndex(self.folioReader.currentFont.rawValue)
-        menuView.addSubview(fontName)
+//        fontName.selectSegmentAtIndex(self.folioReader.currentFont.rawValue)
+//        menuView.addSubview(fontName)
 
         // Separator 2
         let line2 = UIView(frame: CGRect(x: 0, y: fontName.frame.height+fontName.frame.origin.y, width: view.frame.width, height: 1))
